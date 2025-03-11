@@ -18,9 +18,9 @@ provider "snowflake" {
 
 
 variable "SNOWFLAKE_ACCOUNT" {
-  default = "zulpzgg-pgb17985"
+  default = "LMQRBKW-DU98221"
 }
 
 variable "SNOWFLAKE_USER" {
-  default = "test_role"
+  default = "ZACKHADD"
 }
