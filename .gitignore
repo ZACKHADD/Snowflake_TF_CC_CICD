@@ -1,1 +1,16 @@
+# Ignore local state files
+*.tfstate
+*.tfstate.*
 
+# Ignore crash log files
+crash.log
+
+# Ignore override files, which are used for local customizations
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore sensitive files (optional)
+*.tfvars
+*.tfvars.json
