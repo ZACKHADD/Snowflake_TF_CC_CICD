@@ -4,6 +4,5 @@ terraform {
     storage_account_name  = "ecodemostorage"              # The name of the storage account
     container_name        = "terraformcicd"               # The container in the blob storage where the state file will be stored
     key                    = "terraform.tfstate"          # The name of the state file (it can be any name, usually terraform.tfstate)
-    use_azure_cli         = false                         # Prevents Terraform from using Azure CLI
   }
 }
