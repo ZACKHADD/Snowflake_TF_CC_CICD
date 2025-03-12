@@ -13,3 +13,15 @@ variable "warehouse_size" {
 variable "role_name" {
   default = "DEV_ROLE"
 }
+
+variable "SNOWFLAKE_ORGANIZATION" {
+  default = "LMQRBKW"
+}
+
+variable "SNOWFLAKE_ACCOUNT" {
+  default = "DU98221"
+}
+
+variable "SNOWFLAKE_USER" {
+  default = "ZACKHADD"
+}
