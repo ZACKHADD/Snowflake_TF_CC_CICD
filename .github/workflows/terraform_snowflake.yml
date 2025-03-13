@@ -11,8 +11,9 @@ jobs:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     env:
-      ARM_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
-
+      SNOWFLAKE_USER: ${{ secrets[format('SNOWFLAKE_USER_{0}', github.ref_name)] }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets[format('SNOWFLAKE_PRIVATE_KEY_{0}', github.ref_name)] }}
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
