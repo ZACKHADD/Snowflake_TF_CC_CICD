@@ -9,7 +9,7 @@ jobs:
   test-secrets:
     name: 'Test Secret Retrieval'
     runs-on: ubuntu-latest
-    environment: ${{ github.event.pull_request.base.ref }}   # Uses GitHub Environment (dev/prod)
+    environment: ${{ github.base_ref }}  # Uses GitHub Environment (dev/prod)
 
     steps:
       - name: Checkout Repository
