@@ -1,0 +1,31 @@
+name: Test GitHub Environment Secrets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-secrets:
+    name: 'Test Secret Retrieval'
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}  # Uses GitHub Environment (dev/prod)
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Check If Secrets Exist (Without Printing)
+        run: |
+          if [[ -n "$SNOWFLAKE_USER" ]]; then
+            echo "✅ SNOWFLAKE_USER is set"
+          else
+            echo "❌ SNOWFLAKE_USER is missing"
+          fi
+          
+          if [[ -n "$SNOWFLAKE_PRIVATE_KEY" ]]; then
+            echo "✅ SNOWFLAKE_PRIVATE_KEY is set"
+          else
+            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
+          fi
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
