@@ -11,8 +11,8 @@ jobs:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     env:
-      SNOWFLAKE_USER: ${{ secrets[format('SNOWFLAKE_USER_{0}', github.ref_name)] }}
-      SNOWFLAKE_PRIVATE_KEY: ${{ secrets[format('SNOWFLAKE_PRIVATE_KEY_{0}', github.ref_name)] }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
       
     steps:
       - name: Checkout Repository
@@ -36,10 +36,12 @@ jobs:
         working-directory: environments/${{ github.ref_name }}
 
       - name: Plan Terraform
-        run: terraform plan -var-file=terraform.tfvars
+        run: 
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
+          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environments/${{ github.ref_name }}
 
       - name: Apply Terraform
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: terraform apply -auto-approve -var-file=terraform.tfvars
+        run: terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environments/${{ github.ref_name }}
