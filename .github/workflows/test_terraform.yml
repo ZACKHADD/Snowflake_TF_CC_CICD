@@ -1,0 +1,30 @@
+name: Terraform Deployment
+
+on:
+  workflow_dispatch:
+jobs:
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Debug Working Directory
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing contents of the environments directory:"
+          ls -alh environments
+          echo "Listing contents of the dev folder:"
+          ls -alh environments/dev
+          echo "Listing contents of the prod folder:"
+          ls -alh environments/prod
