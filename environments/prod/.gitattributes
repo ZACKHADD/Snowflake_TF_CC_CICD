@@ -1,4 +1,0 @@
-# Keep prod versions of environment-specific files
-*.tfvars merge=ours
-backend.tf merge=ours
-.gitattributes merge=ours

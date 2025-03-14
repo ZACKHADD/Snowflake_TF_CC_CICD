@@ -14,3 +14,7 @@ override.tf.json
 # Ignore sensitive files (optional)
 *.tfvars
 *.tfvars.json
+
+# Ignore local files
+.terraform/
+.terraform.lock.hcl
