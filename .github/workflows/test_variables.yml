@@ -28,6 +28,8 @@ jobs:
           else
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
           fi
+          echo ${{ github.base_ref }}
+          echo ${{ github.event.pull_request.base.ref }}
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
