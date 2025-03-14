@@ -17,3 +17,4 @@ override.tf.json
 
 # Ignore local files
 .terraform/
+.terraform.lock.hcl
