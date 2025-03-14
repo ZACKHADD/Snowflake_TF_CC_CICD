@@ -1,15 +1,17 @@
-name: Terraform Deployment
+name: Terraform Dynamic Deployment
 
 on:
-  pull_request:
-    branches:
-      - dev
-      - prod
+  workflow_dispatch:
+#  pull_request:
+#    branches:
+#      - dev
+#      - prod
 
 jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
+    environment: ${{ github.event.pull_request.base.ref }}
     env:
       SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
       SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
@@ -25,23 +27,23 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: environments/${{ github.ref_name }}
+        working-directory: environment
 
       - name: Check Terraform Formatting
         run: terraform fmt -check -recursive
-        working-directory: environments/${{ github.ref_name }}
+        working-directory: environment
 
       - name: Validate Terraform Configuration
         run: terraform validate
-        working-directory: environments/${{ github.ref_name }}
+        working-directory: environment
 
       - name: Plan Terraform
         run: 
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
           terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
-        working-directory: environments/${{ github.ref_name }}
+        working-directory: environment
 
       - name: Apply Terraform
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         run: terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
-        working-directory: environments/${{ github.ref_name }}
+        working-directory: environment

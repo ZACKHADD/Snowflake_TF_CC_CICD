@@ -2,16 +2,20 @@ name: Test GitHub Environment Secrets
 
 on:
   workflow_dispatch:
-
+  pull_request:
+    branches:
+      - dev
 jobs:
   test-secrets:
     name: 'Test Secret Retrieval'
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}  # Uses GitHub Environment (dev/prod)
+    environment: ${{ github.base_ref }}  # Uses GitHub Environment (dev/prod)
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
 
       - name: Check If Secrets Exist (Without Printing)
         run: |
@@ -26,6 +30,8 @@ jobs:
           else
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
           fi
+          echo ${{ github.base_ref }}
+          echo ${{ github.event.pull_request.base.ref }}
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
