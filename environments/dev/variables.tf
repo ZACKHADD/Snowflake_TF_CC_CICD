@@ -27,5 +27,5 @@ variable "SNOWFLAKE_USER" {
 }
 
 variable "SNOWFLAKE_PRIVATE_KEY" {
-  default = "ZACKHADD"
+
 }
