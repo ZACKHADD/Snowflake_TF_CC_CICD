@@ -23,8 +23,4 @@ jobs:
         run: |
           echo "Current directory: $(pwd)"
           echo "Listing contents of the environments directory:"
-          ls -alh environments
-          echo "Listing contents of the dev folder:"
-          ls -alh environments/dev
-          echo "Listing contents of the prod folder:"
-          ls -alh environments/prod
+          ls -alh environment
