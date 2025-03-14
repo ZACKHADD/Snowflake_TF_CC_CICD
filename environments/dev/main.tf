@@ -11,7 +11,7 @@ provider "snowflake" {
   organization_name  = var.SNOWFLAKE_ORGANIZATION_NAME
   account_name  = var.SNOWFLAKE_ACCOUNT_NAME
   user          = var.SNOWFLAKE_USER
-  private_key   = file("C:/Users/ZAKARIA/.ssh/snowflake_tf_snow_key.p8")
+  private_key   = base64decode(var.SNOWFLAKE_PRIVATE_KEY)
   authenticator = "SNOWFLAKE_JWT"
   role          = "SYSADMIN"
 }
