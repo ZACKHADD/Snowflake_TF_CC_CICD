@@ -4,11 +4,13 @@ on:
   pull_request:
     branches:
       - dev
-      - prod  # or 'main', depending on your setup
-
+      - prod
+    types:
+      - closed 
 jobs:
   trigger-workflow:
     name: 'Trigger Dev/Prod Workflow'
+    if: github.event.pull_request.merged == true  # Only run if the PR was merged
     runs-on: ubuntu-latest
 
     steps:
@@ -22,13 +24,13 @@ jobs:
       - name: Trigger Dev/Prod Workflow
         uses: actions/github-script@v6
         with:
-#          github-token: ${{ secrets.REPO_PAT }}  # Use the PAT for authentication
+#          github-token: ${{ secrets.REPO_PAT }}  # Use the PAT for authentication if needed
           script: |
             try {
               const response = await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                workflow_id: 'test_variables.yml',  // Name of the second workflow
+                workflow_id: 'test_terraform.yml',  // Name of the second workflow
                 ref: '${{ github.event.pull_request.base.ref }}',  // Target branch (dev or prod)
               });
               console.log(`Workflow dispatch successful! Status: ${response.status}`);

@@ -24,3 +24,15 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Listing contents of the environments directory:"
           ls -alh environment
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: environment
+
+      - name: Check Terraform Formatting
+        run: terraform fmt -check -recursive
+        working-directory: environment
+
+      - name: Validate Terraform Configuration
+        run: terraform validate
+        working-directory: environment
