@@ -20,7 +20,17 @@ jobs:
           else
             echo "❌ ARM_SAS_TOKEN is missing"
           fi
+           if [[ -n "$SNOWFLAKE_USER" ]]; then
+            echo "✅ SNOWFLAKE_USER is set"
+          else
+            echo "❌ SNOWFLAKE_USER is missing"
+          fi
           
+          if [[ -n "$SNOWFLAKE_PRIVATE_KEY" ]]; then
+            echo "✅ SNOWFLAKE_PRIVATE_KEY is set"
+          else
+            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
+          fi         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
