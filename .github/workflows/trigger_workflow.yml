@@ -18,15 +18,23 @@ jobs:
       - name: Print Target Branch
         run: |
           echo "Target Branch: ${{ github.event.pull_request.base.ref }}"
-          
+
       - name: Trigger Dev/Prod Workflow
         uses: actions/github-script@v6
         with:
+#          github-token: ${{ secrets.REPO_PAT }}  # Use the PAT for authentication
           script: |
-            const { data: workflowRun } = await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'test_variables.yml',  // Name of the second workflow
-              ref: '${{ github.event.pull_request.base.ref }}',  // Target branch (dev or prod)
-            });
-            console.log(`Triggered workflow: ${workflowRun.id}`);
+            try {
+              const response = await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'test_variables.yml',  // Name of the second workflow
+                ref: '${{ github.event.pull_request.base.ref }}',  // Target branch (dev or prod)
+              });
+              console.log(`Workflow dispatch response: ${JSON.stringify(response, null, 2)}`);
+              console.log(`Triggered workflow ID: ${response.data.id}`);
+            } catch (error) {
+              console.error(`Error triggering workflow: ${error.message}`);
+              console.error(`Error details: ${JSON.stringify(error, null, 2)}`);
+              throw error;
+            }
