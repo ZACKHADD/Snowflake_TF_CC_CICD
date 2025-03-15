@@ -11,7 +11,7 @@ jobs:
   test-secrets:
     name: 'Test Secret Retrieval'
     runs-on: ubuntu-latest
-#    environment: ${{ github.event.pull_request.base.ref || github.ref_name }}  # Dynamic environment selection
+    environment: ${{ github.event.pull_request.base.ref || github.ref_name }}  # Dynamic environment selection
 
     steps:
       - name: Checkout Repository
