@@ -6,9 +6,7 @@ jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    env:
-      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+    environment: ${{github.ref_name }}
       
     steps:
       - name: Checkout Repository
