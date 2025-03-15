@@ -2,10 +2,10 @@ name: Test GitHub Environment Secrets
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - dev
-      - prod  # or 'main', depending on your setup
+#  pull_request:
+#    branches:
+#      - dev
+#      - prod  # or 'main', depending on your setup
 
 jobs:
   test-secrets:
