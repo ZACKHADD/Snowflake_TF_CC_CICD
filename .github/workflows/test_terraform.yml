@@ -28,7 +28,8 @@ jobs:
             echo "✅ SNOWFLAKE_PRIVATE_KEY is set"
           else
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
-          fi         
+          fi
+          echo ${{github.ref_name }}         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
