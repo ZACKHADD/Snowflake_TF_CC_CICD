@@ -11,26 +11,24 @@ jobs:
   test-secrets:
     name: 'Test Secret Retrieval'
     runs-on: ubuntu-latest
+#    environment: ${{ github.event.pull_request.base.ref || github.ref_name }}  # Dynamic environment selection
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
 
-      - name: Determine Environment and Secrets
+      - name: Determine Environment
         id: determine-environment
         run: |
-          if [[ "${{ github.event.pull_request.base.ref }}" == "dev" ]]; then
+          if [[ "${{ github.event.pull_request.base.ref || github.ref_name }}" == "dev" ]]; then
             echo "Selected Environment: dev"
-            echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USER_DEV }}" >> $GITHUB_ENV
-            echo "SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY_DEV }}" >> $GITHUB_ENV
-          elif [[ "${{ github.event.pull_request.base.ref }}" == "prod" ]]; then
+          elif [[ "${{ github.event.pull_request.base.ref || github.ref_name }}" == "prod" ]]; then
             echo "Selected Environment: prod"
-            echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USER_PROD }}" >> $GITHUB_ENV
-            echo "SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PROD }}" >> $GITHUB_ENV
           else
-            echo "Selected Environment: feature"
-            echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USER_FEATURE }}" >> $GITHUB_ENV
-            echo "SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY_FEATURE }}" >> $GITHUB_ENV
+            echo "❌ Unsupported branch or base ref"
+            exit 1
           fi
 
       - name: Check If Secrets Exist (Without Printing)
@@ -48,3 +46,6 @@ jobs:
           fi
           echo "Base Ref: ${{ github.base_ref }}"
           echo "PR Base Ref: ${{ github.event.pull_request.base.ref }}"
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}

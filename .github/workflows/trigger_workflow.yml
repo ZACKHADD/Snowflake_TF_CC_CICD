@@ -1,0 +1,28 @@
+name: Trigger Dev/Prod Workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - prod  # or 'main', depending on your setup
+
+jobs:
+  trigger-workflow:
+    name: 'Trigger Dev/Prod Workflow'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Trigger Dev/Prod Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: workflowRun } = await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'test_variables.yml',  # Name of the second workflow
+              ref: '${{ github.event.pull_request.base.ref }}',  # Target branch (dev or prod)
+            });
+            console.log(`Triggered workflow: ${workflowRun.id}`);
