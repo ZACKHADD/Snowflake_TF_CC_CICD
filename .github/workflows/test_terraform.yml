@@ -29,7 +29,11 @@ jobs:
           else
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
           fi
-          echo ${{github.ref_name }}         
+          echo ${{github.ref_name }} 
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }} 
+          ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }}        
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
