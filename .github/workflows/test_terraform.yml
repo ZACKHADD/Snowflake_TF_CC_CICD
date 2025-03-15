@@ -48,7 +48,8 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
         working-directory: environment
-
+        env:
+          ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }}           
       - name: Check Terraform Formatting
         run: terraform fmt -check -recursive
         working-directory: environment
