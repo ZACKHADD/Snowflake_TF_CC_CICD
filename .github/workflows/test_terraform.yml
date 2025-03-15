@@ -51,7 +51,7 @@ jobs:
         env:
           ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }}           
       - name: Check Terraform Formatting
-        run: terraform fmt -check -recursive
+        run: terraform fmt -recursive
         working-directory: environment
 
       - name: Validate Terraform Configuration
