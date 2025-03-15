@@ -5,17 +5,29 @@ on:
   pull_request:
     branches:
       - dev
+      - prod  # or 'main', depending on your setup
+
 jobs:
   test-secrets:
     name: 'Test Secret Retrieval'
     runs-on: ubuntu-latest
-    environment: dev  # Uses GitHub Environment (dev/prod)
+    environment: ${{ github.event.pull_request.base.ref || github.ref_name }}  # Dynamic environment selection
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: dev
+
+      - name: Determine Environment
+        id: determine-environment
+        run: |
+          if [[ "${{ github.event.pull_request.base.ref || github.ref_name }}" == "dev" ]]; then
+            echo "Selected Environment: dev"
+          elif [[ "${{ github.event.pull_request.base.ref || github.ref_name }}" == "prod" ]]; then
+            echo "Selected Environment: prod"
+          else
+            echo "❌ Unsupported branch or base ref"
+            exit 1
+          fi
 
       - name: Check If Secrets Exist (Without Printing)
         run: |
@@ -30,8 +42,8 @@ jobs:
           else
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
           fi
-          echo ${{ github.base_ref }}
-          echo ${{ github.event.pull_request.base.ref }}
+          echo "Base Ref: ${{ github.base_ref }}"
+          echo "PR Base Ref: ${{ github.event.pull_request.base.ref }}"
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
