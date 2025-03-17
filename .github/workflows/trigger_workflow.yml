@@ -38,7 +38,7 @@ jobs:
               const response = await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                workflow_id: 'test_terraform.yml',  // Name of the second workflow
+                workflow_id: 'terraform_snowflake.yml',  // Name of the second workflow
                 ref: '${{ github.event.pull_request.base.ref }}',  // Target branch (dev or prod)
               });
               console.log(`Workflow dispatch successful! Status: ${response.status}`);
