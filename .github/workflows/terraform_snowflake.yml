@@ -44,6 +44,6 @@ jobs:
         working-directory: environment
 
       - name: Apply Terraform
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+#        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true   # if we activate the PR here
         run: terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environment
