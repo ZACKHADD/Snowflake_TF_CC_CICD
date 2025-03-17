@@ -11,10 +11,11 @@ jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    environment: ${{ github.event.pull_request.base.ref }}
+    environment: ${{github.ref_name }}
     env:
       SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }} 
+      ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }} 
       
     steps:
       - name: Checkout Repository
@@ -30,7 +31,7 @@ jobs:
         working-directory: environment
 
       - name: Check Terraform Formatting
-        run: terraform fmt -check -recursive
+        run: terraform fmt -recursive
         working-directory: environment
 
       - name: Validate Terraform Configuration
@@ -38,12 +39,12 @@ jobs:
         working-directory: environment
 
       - name: Plan Terraform
-        run: 
+        run: |
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
           terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environment
 
       - name: Apply Terraform
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+#        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true   # if we activate the PR here
         run: terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environment

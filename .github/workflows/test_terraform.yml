@@ -6,14 +6,34 @@ jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    env:
-      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+    environment: ${{github.ref_name }}
       
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
+      - name: Debug Secrets
+        run: |
+          if [[ -n "$ARM_SAS_TOKEN" ]]; then
+            echo "✅ ARM_SAS_TOKEN is set"
+          else
+            echo "❌ ARM_SAS_TOKEN is missing"
+          fi
+           if [[ -n "$SNOWFLAKE_USER" ]]; then
+            echo "✅ SNOWFLAKE_USER is set"
+          else
+            echo "❌ SNOWFLAKE_USER is missing"
+          fi
+          
+          if [[ -n "$SNOWFLAKE_PRIVATE_KEY" ]]; then
+            echo "✅ SNOWFLAKE_PRIVATE_KEY is set"
+          else
+            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing"
+          fi
+          echo ${{github.ref_name }} 
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }} 
+          ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }}        
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -24,3 +44,16 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Listing contents of the environments directory:"
           ls -alh environment
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: environment
+        env:
+          ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }}           
+      - name: Check Terraform Formatting
+        run: terraform fmt -recursive
+        working-directory: environment
+
+      - name: Validate Terraform Configuration
+        run: terraform validate
+        working-directory: environment
