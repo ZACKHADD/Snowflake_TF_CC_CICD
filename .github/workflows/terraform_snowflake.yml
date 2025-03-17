@@ -11,10 +11,11 @@ jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    environment: ${{ github.event.pull_request.base.ref }}
+    environment: ${{github.ref_name }}
     env:
       SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }} 
+      ARM_SAS_TOKEN: ${{ secrets.ARM_SAS_TOKEN }} 
       
     steps:
       - name: Checkout Repository
