@@ -47,17 +47,12 @@ jobs:
         
       - name: Plan Terraform
         run: |
-          if [ -z "$SNOWFLAKE_USER" ]; then
-            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
+          if [ ! -s "$SNOWFLAKE_PRIVATE_KEY_PATH" ]; then
+            echo "❌ SNOWFLAKE_PRIVATE_KEY file is empty!"
             exit 1
           else
-            echo "✅ SNOWFLAKE_USER is set!"
-          fi
-          if [ -z "$SNOWFLAKE_PRIVATE_KEY" ]; then
-            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
-            exit 1
-          else
-            echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
+            echo "✅ SNOWFLAKE_PRIVATE_KEY file is correctly decoded!"
+            ls -lah "$SNOWFLAKE_PRIVATE_KEY_PATH"
           fi
 #          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
 #          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
