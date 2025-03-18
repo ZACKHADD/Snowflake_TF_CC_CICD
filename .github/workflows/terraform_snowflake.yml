@@ -61,11 +61,13 @@ jobs:
             echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
           fi
         shell: bash
+        working-directory: environment
         
       - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
         run: |
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
         shell: bash
+        working-directory: environment
         
 #      - name: Apply Terraform
 #        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true   # if we activate the PR here
