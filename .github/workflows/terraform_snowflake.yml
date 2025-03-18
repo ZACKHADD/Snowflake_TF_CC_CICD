@@ -53,20 +53,19 @@ jobs:
 
       - name: Verify SNOWFLAKE_PRIVATE_KEY
         run: |
-          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
+
           if [ -z "$SNOWFLAKE_PRIVATE_KEY" ]; then
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
             exit 1
           else
             echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
           fi
-        shell: bash
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV          
         working-directory: environment
         
       - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
         run: |
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
-        shell: bash
         working-directory: environment
         
 #      - name: Apply Terraform
