@@ -37,6 +37,7 @@ jobs:
       - name: Validate Terraform Configuration
         run: terraform validate
         working-directory: environment
+        
       - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
         run: |
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
@@ -45,13 +46,19 @@ jobs:
         
       - name: Plan Terraform
         run: |
+          if [ -z "$SNOWFLAKE_USER" ]; then
+            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
+            exit 1
+          else
+            echo "✅ SNOWFLAKE_USER is set!"
+          fi
           if [ -z "$SNOWFLAKE_PRIVATE_KEY" ]; then
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
             exit 1
           else
             echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
           fi
-#          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
 #          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
         working-directory: environment
 
@@ -64,7 +71,7 @@ jobs:
           else
             echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
           fi
-#          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV          
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV          
         working-directory: environment
         
 #      - name: Apply Terraform
