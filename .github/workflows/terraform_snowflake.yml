@@ -46,6 +46,7 @@ jobs:
 
       - name: Verify SNOWFLAKE_PRIVATE_KEY
         run: |
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
           if [ -z "$SNOWFLAKE_PRIVATE_KEY" ]; then
             echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
             exit 1
@@ -59,9 +60,9 @@ jobs:
           echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
         shell: bash
         
-      - name: Apply Terraform
+#      - name: Apply Terraform
 #        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true   # if we activate the PR here
-        run: |
-          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
-          terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
-        working-directory: environment
+#        run: |
+#          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
+#          terraform apply -auto-approve -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
+#        working-directory: environment
