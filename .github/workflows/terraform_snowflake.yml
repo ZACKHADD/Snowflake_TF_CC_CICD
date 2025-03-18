@@ -38,11 +38,12 @@ jobs:
         run: terraform validate
         working-directory: environment
         
-#      - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
-#        run: |
-#          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
-#        shell: bash
-#        working-directory: environment
+      - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
+        run: |
+          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode | tr -d '\r\n')" >> $GITHUB_ENV
+#          export SNOWFLAKE_PRIVATE_KEY=$(echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode | tr -d '\r\n')
+        shell: bash
+        working-directory: environment
         
       - name: Plan Terraform
         run: |
