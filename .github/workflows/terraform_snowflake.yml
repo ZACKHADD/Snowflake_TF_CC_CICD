@@ -38,11 +38,12 @@ jobs:
         run: terraform validate
         working-directory: environment
         
-      - name: Decode and Store SNOWFLAKE_PRIVATE_KEY
+      - name: Decode SNOWFLAKE_PRIVATE_KEY_B64
         run: |
           echo "Decoding SNOWFLAKE_PRIVATE_KEY_B64..."
-          echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > snowflake_private_key.pem
+          printf "%s" "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > snowflake_private_key.pem
           echo "SNOWFLAKE_PRIVATE_KEY_PATH=$(pwd)/snowflake_private_key.pem" >> $GITHUB_ENV
+          ls -lah snowflake_private_key.pem
         shell: bash
         
       - name: Plan Terraform
