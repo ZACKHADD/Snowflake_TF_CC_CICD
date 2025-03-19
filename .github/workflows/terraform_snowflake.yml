@@ -43,6 +43,12 @@ jobs:
           echo "Decoding SNOWFLAKE_PRIVATE_KEY_DECODED..."
           # Decode the private key and store it in an environment variable
           export SNOWFLAKE_PRIVATE_KEY_DECODED=$(echo "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode)
+          if [ -z "${SNOWFLAKE_PRIVATE_KEY_DECODED}" ]; then
+            echo "Error: SNOWFLAKE_PRIVATE_KEY_DECODED is empty!"
+            exit 1
+          else
+            echo "SNOWFLAKE_PRIVATE_KEY_DECODED is not empty."
+          fi
 #          echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
 #          printf "%s" "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
 #          ls -lah snowflake_private_key.p8
