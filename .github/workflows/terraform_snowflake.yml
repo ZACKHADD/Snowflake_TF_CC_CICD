@@ -50,11 +50,11 @@ jobs:
         
       - name: Plan Terraform
         run: |
-          if [ ! -s "${{ env.SNOWFLAKE_PRIVATE_KEY_DECODED }}" ]; then
-            echo "❌ SNOWFLAKE_PRIVATE_KEY_DECODED is empty!"
+          if [ -z "${SNOWFLAKE_PRIVATE_KEY_DECODED}" ]; then
+            echo "Error: SNOWFLAKE_PRIVATE_KEY_DECODED is empty!"
             exit 1
           else
-            echo "✅ SNOWFLAKE_PRIVATE_KEY_DECODED is correctly decoded!"
+            echo "SNOWFLAKE_PRIVATE_KEY_DECODED is not empty."
           fi
           terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=${{ env.SNOWFLAKE_PRIVATE_KEY_DECODED }}" -var-file=terraform.tfvars
 #         echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV        
