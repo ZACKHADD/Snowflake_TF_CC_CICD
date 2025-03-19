@@ -38,31 +38,9 @@ jobs:
         run: terraform validate
         working-directory: environment
         
-      - name: Decode SNOWFLAKE_PRIVATE_KEY
-        run: |
-      - name: Decode SNOWFLAKE_PRIVATE_KEY
-        run: |
-          echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
-          
-          # Decode the private key and store it in a file
-          echo "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
-          
-          # Verify the private key file
-          ls -lah snowflake_private_key.p8
-          
-          # Optionally display the decoded content (for debugging only)
-          # cat snowflake_private_key.p8
-          
-          echo "Private key decoded successfully."
-#          echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
-#          printf "%s" "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
-#          ls -lah snowflake_private_key.p8
-        shell: bash
-        
       - name: Plan Terraform
         run: |
-          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY_PATH=$(pwd)/snowflake_private_key.p8" -var-file=terraform.tfvars
-#         echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV        
+          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars       
         working-directory: environment
         
 #      - name: Apply Terraform
