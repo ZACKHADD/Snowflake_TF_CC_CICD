@@ -42,18 +42,18 @@ jobs:
         run: |
           echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
           printf "%s" "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
-          echo "SNOWFLAKE_PRIVATE_KEY_PATH=$(pwd)/snowflake_private_key.pem" >> $GITHUB_ENV
+          echo "SNOWFLAKE_DECODED_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY | base64 --decode)" >> $GITHUB_ENV
           ls -lah snowflake_private_key.p8
+#         echo "SNOWFLAKE_PRIVATE_KEY_PATH=$(pwd)/snowflake_private_key.p8" >> $GITHUB_ENV
         shell: bash
         
       - name: Plan Terraform
         run: |
-          if [ ! -s "$SNOWFLAKE_PRIVATE_KEY_PATH" ]; then
-            echo "❌ SNOWFLAKE_PRIVATE_KEY file is empty!"
+          if [ ! -s "$SNOWFLAKE_DECODED_PRIVATE_KEY" ]; then
+            echo "❌ SNOWFLAKE_DECODED_PRIVATE_KEY is empty!"
             exit 1
           else
-            echo "✅ SNOWFLAKE_PRIVATE_KEY file is correctly decoded!"
-            ls -lah "$SNOWFLAKE_PRIVATE_KEY_PATH"
+            echo "✅ SNOWFLAKE_DECODED_PRIVATE_KEY is correctly decoded!"
           fi
 #          echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV
 #          terraform plan -var="SNOWFLAKE_USER=$SNOWFLAKE_USER" -var="SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY" -var-file=terraform.tfvars
@@ -62,11 +62,11 @@ jobs:
       - name: Verify SNOWFLAKE_PRIVATE_KEY
         run: |
 
-          if [ -z "$SNOWFLAKE_PRIVATE_KEY" ]; then
-            echo "❌ SNOWFLAKE_PRIVATE_KEY is missing!"
+          if [ -z "$SNOWFLAKE_DECODED_PRIVATE_KEY" ]; then
+            echo "❌ SNOWFLAKE_DECODED_PRIVATE_KEY is missing!"
             exit 1
           else
-            echo "✅ SNOWFLAKE_PRIVATE_KEY is set!"
+            echo "✅ SNOWFLAKE_DECODED_PRIVATE_KEY is set!"
           fi
   #        echo "SNOWFLAKE_PRIVATE_KEY=$(echo $SNOWFLAKE_PRIVATE_KEY_B64 | base64 --decode)" >> $GITHUB_ENV          
         working-directory: environment
