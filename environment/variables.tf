@@ -26,6 +26,6 @@ variable "SNOWFLAKE_USER" {
   default = "ZACKHADD"
 }
 
-variable "SNOWFLAKE_PRIVATE_KEY_PATH" {
+variable "SNOWFLAKE_PRIVATE_KEY" {
 
 }

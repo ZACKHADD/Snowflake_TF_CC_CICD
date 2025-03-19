@@ -11,7 +11,7 @@ provider "snowflake" {
   organization_name  = var.SNOWFLAKE_ORGANIZATION_NAME
   account_name  = var.SNOWFLAKE_ACCOUNT_NAME
   user          = var.SNOWFLAKE_USER
-  private_key_path   = base64decode(var.SNOWFLAKE_PRIVATE_KEY_PATH)
+  private_key   = base64decode(var.SNOWFLAKE_PRIVATE_KEY)
   authenticator = "SNOWFLAKE_JWT"
   role          = "SYSADMIN"
 }
