@@ -49,7 +49,8 @@ jobs:
           else
             echo "SNOWFLAKE_PRIVATE_KEY_DECODED is not empty."
           fi
-          echo "SNOWFLAKE_PRIVATE_KEY_DECODED=$SNOWFLAKE_PRIVATE_KEY_DECODED" >> $GITHUB_ENV
+          echo "${SNOWFLAKE_PRIVATE_KEY_DECODED}"
+#          echo "SNOWFLAKE_PRIVATE_KEY_DECODED=$SNOWFLAKE_PRIVATE_KEY_DECODED" >> $GITHUB_ENV
 #          echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
 #          printf "%s" "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
 #          ls -lah snowflake_private_key.p8
