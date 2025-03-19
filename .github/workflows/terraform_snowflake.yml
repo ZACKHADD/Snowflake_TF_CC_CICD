@@ -40,10 +40,10 @@ jobs:
         
       - name: Decode SNOWFLAKE_PRIVATE_KEY
         run: |
-          echo "Decoding SNOWFLAKE_PRIVATE_KEY_B64..."
+          echo "Decoding SNOWFLAKE_PRIVATE_KEY..."
           printf "%s" "$SNOWFLAKE_PRIVATE_KEY" | base64 --decode > snowflake_private_key.p8
           echo "SNOWFLAKE_PRIVATE_KEY_PATH=$(pwd)/snowflake_private_key.pem" >> $GITHUB_ENV
-          ls -lah snowflake_private_key.pem
+          ls -lah snowflake_private_key.p8
         shell: bash
         
       - name: Plan Terraform
