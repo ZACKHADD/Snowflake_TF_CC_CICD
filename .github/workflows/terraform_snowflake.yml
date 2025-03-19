@@ -50,7 +50,7 @@ jobs:
         
       - name: Plan Terraform
         run: |
-          if [ ! -s "$SNOWFLAKE_PRIVATE_KEY_DECODED" ]; then
+          if [ ! -s "${{ env.SNOWFLAKE_PRIVATE_KEY_DECODED }}" ]; then
             echo "❌ SNOWFLAKE_PRIVATE_KEY_DECODED is empty!"
             exit 1
           else
