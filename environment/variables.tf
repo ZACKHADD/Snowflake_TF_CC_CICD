@@ -28,6 +28,5 @@ variable "SNOWFLAKE_USER" {
 
 variable "SNOWFLAKE_PRIVATE_KEY" {
   description = "Base64 encoded Snowflake private key"
-  type        = string
   sensitive   = true
 }
