@@ -15,11 +15,11 @@ variable "role_name" {
 }
 
 variable "SNOWFLAKE_ORGANIZATION_NAME" {
-  default = "LMQRBKW"
+  default = "YILFLZT"
 }
 
 variable "SNOWFLAKE_ACCOUNT_NAME" {
-  default = "DU98221"
+  default = "KEB73082"
 }
 
 variable "SNOWFLAKE_USER" {
@@ -27,5 +27,6 @@ variable "SNOWFLAKE_USER" {
 }
 
 variable "SNOWFLAKE_PRIVATE_KEY" {
-
+  description = "Base64 encoded Snowflake private key"
+  sensitive   = true
 }
