@@ -25,3 +25,4 @@ explain how to set locally the environment variable of the private key using pow
 
 [System.Environment]::SetEnvironmentVariable("TF_VAR_SNOWFLAKE_PRIVATE_KEY", (Get-Content -Raw "C:\Users\ZAKARIA\.ssh\encoded_key.txt"), "User")
 
+modif
